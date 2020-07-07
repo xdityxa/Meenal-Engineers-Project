@@ -299,7 +299,7 @@ async{
                                             Container(
                                               margin: EdgeInsets.all(5),
                                                 child: Container(
-                                                  width: 160,
+                                                  width: 130,
                                               
                                               child: Text(
                                                 "124 San Francisco, CA",

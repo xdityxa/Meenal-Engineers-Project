@@ -111,7 +111,7 @@ class _SignatureScreenState extends State<SignatureScreen> {
                 child: Text(
                   "Uploading...",
                   style: TextStyle(
-                      color: Colors.purple,
+                      color: Colors.blue,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                 ),
