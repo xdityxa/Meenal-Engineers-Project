@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "469746063914",
+    "firebase_url": "https://checklist-acd4c.firebaseio.com",
+    "project_id": "checklist-acd4c",
+    "storage_bucket": "checklist-acd4c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469746063914:android:b329bdd321537911138153",
+        "android_client_info": {
+          "package_name": "com.example.meenal_app_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469746063914-8blg0eq7iitq5t42j5ufv85qocjnkeni.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwkHW3WSgZARcO77tjm6AldBGTegnfQKM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469746063914-8blg0eq7iitq5t42j5ufv85qocjnkeni.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
