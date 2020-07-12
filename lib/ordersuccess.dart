@@ -3,8 +3,7 @@ import 'package:meenal_app_project/HomeScreen.dart';
 import 'dart:async';
 
 class Ordersuccess extends StatefulWidget {
-  var orderid;
-  Ordersuccess(this.orderid);
+  
   @override
   _OrdersuccessState createState() => _OrdersuccessState();
 }

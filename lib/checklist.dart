@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:meenal_app_project/leaddetails.dart';
 
 class Checklist extends StatefulWidget {
-  String leadid,inspectorid;
-  Checklist(this.leadid,this.inspectorid);
+  var items, index;
+  Checklist(this.items, this.index);
   @override
   _ChecklistState createState() => _ChecklistState();
 }
@@ -14,8 +14,40 @@ class Checklist extends StatefulWidget {
 class _ChecklistState extends State<Checklist> {
   final TextEditingController t1 = new TextEditingController(text: "");
   final TextEditingController t2 = new TextEditingController(text: "");
+  List<Map<String, String>> items;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // special = widget.items;
+    items = widget.items;
+    if (items[widget.index]["data"] == "[]") {
+      print("object");
+      // special = [
+      //   {"key": "serial no", "value":""},
+      //   {"Key": "Make", "value":""},
+      //   {"Key": "Capacity", "value":""},
+      //   {"Key": "Location", "value":""},
+      //   {"Key": "Dimention/Measurements", "value":""},
+      //   {"Key": "Remarks/observations", "value":""}
+      // ];
 
- var special;
+       special = [
+        {"key": "serial no", "value":""},
+        {"key": "Make", "value":""},
+        {"key": "Capacity", "value":""},
+        {"key": "location", "value":""},
+        {"key": "Dimention/Measurements", "value":""},
+        {"key": "Remarks/observations", "value":""}
+      ];
+      print(special.length);
+      setState(() {});
+    } else {
+      special = jsonDecode(items[widget.index]["data"]);
+    }
+  }
+
+  var special;
   void _showdialogue() {
     showDialog(
         barrierDismissible: false,
@@ -33,15 +65,16 @@ class _ChecklistState extends State<Checklist> {
     _scaffoldkey.currentState.showSnackBar(snackBar);
   }
 
-  addparam() {
+  addparam(index) {
     print({"key": t1.text, "value": t2.text});
     // return;
     var param = {"key": t1.text, "value": t2.text};
-    if (special == null) {
-      special = [param];
-    } else {
-      special.add(param);
-    }
+    // if (special == null) {
+    //   special = [param];
+    // } else {
+    //   special.add(param);
+    // }
+    special[index]["value"] = t2.text;
     print(special);
     t1.text = "";
     t2.text = "";
@@ -49,8 +82,10 @@ class _ChecklistState extends State<Checklist> {
     Navigator.pop(context);
   }
 
-  void remarks() {
+  void remarks(index) {
     // flutter defined function
+    t1.text = special[index]["key"];
+    t2.text=special[index]["value"];
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -107,7 +142,7 @@ class _ChecklistState extends State<Checklist> {
               child: new Text("Add"),
               onPressed: () {
                 // creteorder();
-                addparam();
+                addparam(index);
               },
             ),
           ],
@@ -120,90 +155,119 @@ class _ChecklistState extends State<Checklist> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      key: _scaffoldkey,
-      appBar: AppBar(
-        title: Text("Checklist"),
-        actions: [
-          GestureDetector(
-              onTap: () {
-                remarks();
-              },
-              child: Container(padding: EdgeInsets.all(10),child: Icon(Icons.add)))
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-       
-          onPressed: () {
-             print(special);
-            //  return 0;
-            if (special == null) {
-              showsnack("Please add parameters");
-            } else {
+    return WillPopScope(
+      onWillPop: (){
+        // Navigator.pop(context,it)
+          print(special);
+              //  return 0;
+              if (special == null) {
+                showsnack("Please add parameters");
+              } else {
+                print(special);
+                print("hey");
+                print(items[widget.index]["data"]);
+                items[widget.index]["data"] = jsonEncode(special);
+                print("hey");
+                print(items);
+                // return;
+                Navigator.pop(context, items);
+              }
+      },
+          child: Scaffold(
+        backgroundColor: Colors.white,
+        key: _scaffoldkey,
+        appBar: AppBar(
+          title: Text("Checklist"),
+          
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
               print(special);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LeadDetails(special,widget.leadid,widget.inspectorid)),
-              );
-            }
-          },
-          label: Row(
-            children: [Text("Continue"), Icon(Icons.arrow_forward)],
-          )),
-      body: Container(
-        margin: EdgeInsets.all(10),
-        child: special == null
-            ? Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/images/no_parameter.png',),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      child: Text('No parameters yet', style: TextStyle(
-                        color: Colors.grey
-                      ),),)
-                  ],
-                ),
-            )
-            : ListView.builder(
-                itemCount: special.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    child: Container(
-                      margin: EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: <Widget>[
-                              Text((index+1).toString() + ')', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15)),
+              //  return 0;
+              if (special == null) {
+                showsnack("Please add parameters");
+              } else {
+                print(special);
+                print("hey");
+                print(items[widget.index]["data"]);
+                items[widget.index]["data"] = jsonEncode(special);
+                print("hey");
+                print(items);
+                // return;
+                Navigator.pop(context, items);
+              }
+            },
+            label: Row(
+              children: [Text("Continue"), Icon(Icons.arrow_forward)],
+            )),
+        body: Container(
+          margin: EdgeInsets.all(10),
+          child: items[widget.index]["data"] == null
+              ? Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/no_parameter.png',
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(15),
+                        child: Text(
+                          'No parameters yet',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: special.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        remarks(index);
+                      },
+                      child: Card(
+                        child: Container(
+                          margin: EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: <Widget>[
+                                  Text((index + 1).toString() + ')',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15)),
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Container(
+                                          margin: EdgeInsets.all(5),
+                                          child: Text(
+                                            special[index]["key"],
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15),
+                                          ))),
+                                ],
+                              ),
                               Align(
                                   alignment: Alignment.centerLeft,
                                   child: Container(
-                                      margin: EdgeInsets.all(5),
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 5, horizontal: 17),
                                       child: Text(
-                                        special[index]["key"],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15),
+                                        special[index]["value"],
+                                        style: TextStyle(fontSize: 15),
                                       ))),
                             ],
                           ),
-                          Align(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                  margin: EdgeInsets.symmetric(vertical:5, horizontal: 17),
-                                  child: Text(
-                                    special[index]["value"],
-                                    style: TextStyle(fontSize: 15),
-                                  ))),
-                        ],
+                        ),
                       ),
-                    ),
-                  );
-                }),
+                    );
+                  }),
+        ),
       ),
     );
   }

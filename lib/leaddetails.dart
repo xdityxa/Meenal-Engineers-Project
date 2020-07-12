@@ -16,7 +16,7 @@ class _LeadDetailsState extends State<LeadDetails> {
   final TextEditingController t1 = new TextEditingController(text: "");
   final TextEditingController t2 = new TextEditingController(text: "");
   final TextEditingController t3 = new TextEditingController(text: "");
-    DateTime _selectedDate;
+  final TextEditingController t4 = new TextEditingController(text: "");
 
 
   submit() {
@@ -27,7 +27,8 @@ class _LeadDetailsState extends State<LeadDetails> {
       "inspectorid": widget.inspectorid,
       "siterepresentativename": t1.text,
       "designation": t2.text,
-      "phoneno": t3.text
+      "phoneno": t3.text,
+      "remarks": t4.text
     };
     data["data"] = widget.checklist;
 
@@ -38,22 +39,7 @@ class _LeadDetailsState extends State<LeadDetails> {
     );
   }
 
-  void _presentDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2019),
-      lastDate: DateTime.now(),
-    ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      setState(() {
-        _selectedDate = pickedDate;
-      });
-    });
-    print('...');
-  }
+ 
   
 
   @override
@@ -80,7 +66,7 @@ class _LeadDetailsState extends State<LeadDetails> {
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            if (t1.text == "" || t2.text == "" || t3.text == "" || _selectedDate.toString() == "") {
+            if (t1.text == "" || t2.text == "" || t3.text == "" ) {
               showsnack("Please enter valid details");
             } else {
               if (t3.text.length != 10) {
@@ -117,33 +103,16 @@ class _LeadDetailsState extends State<LeadDetails> {
               //   titleInput = val;
               // },
             ),
-            Container(
-              // color: Colors.amber,
-                height: 70,
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.calendar_today),
-                    SizedBox(width: 10,),
-                    Expanded(
-                      child: Text(
-                        _selectedDate == null
-                            ? 'No Date Chosen!'
-                            : 'Date: ${DateFormat.yMd().format(_selectedDate)}',
-                      ),
-                    ),
-                    FlatButton(
-            textColor: Theme.of(context).primaryColor,
-            child: Text(
-              'Choose Date',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+
+            TextField(
+              decoration: InputDecoration(labelText: 'Remarks', icon: Icon(Icons.edit)),
+              controller: t4,
+              keyboardType:TextInputType.text,
+              // onChanged: (val) {
+              //   titleInput = val;
+              // },
             ),
-            onPressed: _presentDatePicker,
-          )
-                  ],
-                ),
-              ),
+            
           ],
         ),
       ),

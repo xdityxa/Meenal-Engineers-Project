@@ -15,6 +15,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 
 import 'LoginScreen.dart';
+import 'ordersuccess.dart';
 
 class SignatureScreen extends StatefulWidget {
   var data;
@@ -50,20 +51,22 @@ class _SignatureScreenState extends State<SignatureScreen> {
     final String url = (await downloadUrl.ref.getDownloadURL());
     print("URL is $url");
     data["signature"] = url;
-    print(data);
+    print(data);print(jsonEncode(data));
     File(path).delete();
     Navigator.pop(context);
     confirm();
   }
 
   var orders;
-  submit() async {
+   submit() async {
     _showdialogue();
     final user = await SharedPreferences.getInstance();
     data["masterhash"] = user.getString("masterhash");
 
     print(data);
-    Map x = jsonDecode(data);
+    print(jsonEncode({"key":jsonEncode(data)}));
+    // return;
+    // Map x = jsonDecode(data);
     // return;
     final String url =
         "https://conexo.in/dev/meenalengg/public/listing.php/lead/create";
@@ -74,7 +77,6 @@ class _SignatureScreenState extends State<SignatureScreen> {
         body: {"key":jsonEncode(data)}
         );
     print("login response"+response.body);
-    return;
     var jsondecoded = json.decode(response.body);
     print(jsondecoded);
 
@@ -83,11 +85,11 @@ class _SignatureScreenState extends State<SignatureScreen> {
       setState(() {
         // orders = jsondecoded["data"];
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+            context, MaterialPageRoute(builder: (context) => Ordersuccess()));
       });
-    } else if (jsondecoded['message'] == "no_lead_found") {
+    } else if (jsondecoded['message'] == "error") {
       setState(() {});
-      showsnack("No orders available");
+      showsnack("Can't update");
     } else {
       showsnack("Some error has ouccered");
     }
